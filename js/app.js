@@ -36,5 +36,16 @@ var app = new Vue({
                 this.sampleDisplay = this.sample.slice(0, this.split) + '<span>' + this.splitLetter + '</span>' + this.sample.slice(this.split + 1);
             }
         }
+    },
+    methods: {
+        checkFontExists: function(font) {
+            if (!checkfont(font)) {
+                WebFont.load({
+                    google: {
+                        families: [font]
+                    }
+                });
+            }
+        }
     }
 });
