@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Font Compare</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
     <link rel="stylesheet" href="./css/app.css">
 </head>
 <body>
@@ -35,6 +36,12 @@
                 <p>
                     <label v-bind:for="'comparison' + index + 'font'">Font</label>
                     <input type="text" v-bind:id="'comparison' + index + 'font'" v-model="items[index].font" @change="checkFontExists(items[index].font)">
+                    <select v-model="items[index].selectedFont" @change="updateFontFromSelection(index)">
+                        <option value=""></option>
+                        <optgroup v-for="(group, name) in fonts" v-bind:label="name">
+                            <option v-for="font in group" v-bind:value="font">{{ font }}</option>
+                        </optgroup>
+                    </select>
                 </p>
             </div>
             <div class="column">
@@ -49,8 +56,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
     <script src="./js/jfont-checker.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script> -->
     <script src="./js/app.js"></script>
 </body>
 </html>

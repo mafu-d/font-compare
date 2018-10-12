@@ -12,7 +12,87 @@ var app = new Vue({
             ],
             split: -1,
             splitLetter: '',
-            overlay: false
+            overlay: false,
+            fonts: {
+                'WebSafe': [
+                    'Arial',
+                    'Arial Black',
+                    'Arial Narrow',
+                    'Arial Rounded MT Bold',
+                    'Avant Garde',
+                    'Calibri',
+                    'Candara',
+                    'Century Gothic',
+                    'Franklin Gothic Medium',
+                    'Futura',
+                    'Geneva',
+                    'Gill Sans',
+                    'Helvetica',
+                    'Impact',
+                    'Lucida Grande',
+                    'Optima',
+                    'Segoe UI',
+                    'Tahoma',
+                    'Trebuchet MS',
+                    'Verdana',
+                    'Big Calson',
+                    'Bodoni MT',
+                    'Book Antiqua',
+                    'Calisto MT',
+                    'Cambria',
+                    'Didot',
+                    'Garamond',
+                    'Georgia',
+                    'Goudy Old Style',
+                    'Hoefler Text',
+                    'Lucida Bright',
+                    'Palatino',
+                    'Perpetua',
+                    'Rockwell',
+                    'Rockwell Extra Bold',
+                    'Baskerville',
+                    'Times New Roman',
+                    'Consolas',
+                    'Courier New',
+                    'Lucida Console',
+                    'Lucida Sans Typewriter',
+                    'Monaco',
+                    'Andale Mono',
+                    'Copperplate',
+                    'Papyrus',
+                    'Brush Script MT'
+                ],
+                'Google Fonts': [
+                    'Roboto',
+                    'Open Sans',
+                    'Lato',
+                    'Montserrat',
+                    'Roboto Condensed',
+                    'Source Sans Pro',
+                    'Oswald',
+                    'Raleway',
+                    'Slabo 27px',
+                    'PT Sans',
+                    'Roboto Slab',
+                    'Merriweather',
+                    'Open Sans Condensed',
+                    'Ubuntu',
+                    'Noto Sans',
+                    'Poppins',
+                    'Playfair Display',
+                    'Roboto Mono',
+                    'Lora',
+                    'PT Serif',
+                    'Titillium Web',
+                    'Muli',
+                    'Arimo',
+                    'PT Sans Narrow',
+                    'Fira Sans',
+                    'Nunito',
+                    'Noto Serif',
+                    'Inconsolata'
+                ]
+            }
         };
     },
     watch: {
@@ -39,6 +119,7 @@ var app = new Vue({
     },
     methods: {
         checkFontExists: function(font) {
+            console.log('Font "' + font + '" ' + (checkfont(font) ? '' : 'not ') + 'found');
             if (!checkfont(font)) {
                 WebFont.load({
                     google: {
@@ -46,6 +127,14 @@ var app = new Vue({
                     }
                 });
             }
+        },
+        updateFontFromSelection(index) {
+            this.items[index].font = this.items[index].selectedFont;
+            this.checkFontExists(this.items[index].font);
         }
+    },
+    mounted() {
+        this.fonts['WebSafe'].sort();
+        this.fonts['Google Fonts'].sort();
     }
 });
