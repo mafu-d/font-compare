@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Font Compare</title>
+
+    <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+
+    <div id="app">
+        <div class="columns">
+            <div class="column">
+                <label for="comparisons">Comparisons</label>
+                <input type="number" id="comparisons" v-model.number="comparisons">
+            </div>
+            <div class="column">
+                <label for="sample">Sample text</label>
+                <input type="text" id="sample" v-model="sample">
+            </div>
+            <div class="column">
+                <label for="size">Font size</label>
+                <input type="number" id="size" v-model.number="size">
+            </div>
+            <div class="column">
+                <label for="split">Split</label> <button @click="overlay = true">Overlay</button>
+                <input type="range" min="-1" v-bind:max="sample.length" v-model.number="split">
+            </div>
+        </div>
+        <div class="display columns" v-for="(item, index) in comparisons">
+            <div class="column is-narrow">
+                <h3>Settings</h3>
+                <p>
+                    <label v-bind:for="'comparison' + index + 'font'">Font</label>
+                    <input type="text" v-bind:id="'comparison' + index + 'font'" v-model="items[index].font">
+                </p>
+            </div>
+            <div class="column">
+                <div class="sample" v-bind:style="{fontSize: size + 'pt', fontFamily: items[index].font}" v-html="sampleDisplay"></div>
+            </div>
+        </div>
+        <div class="modal" v-if="overlay" @click="overlay = false">
+            <div class="modal-box">
+                <span v-for="(item, index) in items" v-bind:style="{fontFamily: item.font}">{{ splitLetter }}</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                    sample: 'The quick brown fox jumps over the lazy dog.',
+                    sampleDisplay: 'The quick brown fox jumps over the lazy dog.',
+                    size: 40,
+                    comparisons: 2,
+                    items: [
+                        { font: 'Arial' },
+                        { font: 'Helvetica Neue LT Std' }
+                    ],
+                    split: -1,
+                    splitLetter: '',
+                    overlay: false
+                };
+            },
+            watch: {
+                comparisons: function() {
+                    if (this.comparisons < this.items.length) {
+                        this.items = this.items.slice(0, this.comparisons);
+                    }
+                    if (this.comparisons > this.items.length) {
+                        this.items.push({
+                            font: 'serif'
+                        });
+                    }
+                },
+                split: function() {
+                    if (this.split === -1) {
+                        this.sampleDisplay = this.sample;
+                        this.splitLetter = '';
+                    }
+                    else {
+                        this.splitLetter = this.sample.slice(this.split, this.split + 1);
+                        this.sampleDisplay = this.sample.slice(0, this.split) + '<span>' + this.splitLetter + '</span>' + this.sample.slice(this.split + 1);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
